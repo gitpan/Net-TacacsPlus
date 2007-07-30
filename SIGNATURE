@@ -1,0 +1,35 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 54b6780e814706d7c42e04f8e7272c526f2673dd Changes
+SHA1 c6311a142a2329ff25cb54d090405c3f2338cf08 MANIFEST
+SHA1 ba507bab1d7dbfeff8f5b086a95c2b5cec5f5c69 META.yml
+SHA1 e012df5a2b7f6eeaaac8363ee7027a70cbe9d108 Makefile.PL
+SHA1 f725d4dc057d2d711413d1bf1e75d352fce72819 README
+SHA1 4b4db1fc689fc7d817bb3eeda9a6615042b5f8da lib/Net/TacacsPlus.pm
+SHA1 a79138956d8bfa42abfe10a7003514a596aae220 lib/Net/TacacsPlus/Client.pm
+SHA1 88692ed3954e1e390a0359a9b5599e7b99b7ad8e lib/Net/TacacsPlus/Constants.pm
+SHA1 8958fdcf2a786963560fae71e320b965904bc285 lib/Net/TacacsPlus/Packet.pm
+SHA1 4aeb184c9bed26ab6c3be1ebdb8470c0cb353b1f t/0-signature.t
+SHA1 0d86e888bbf7c851129ea8ad3f2fafc70c3200dc t/Net-TacacsPlus-Client.t
+SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/distribution.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFGrekfuzJBASXpqvsRAoPxAJ98gvV/B4XdSFQIkwhoxKrsYrKnwgCgm1ql
+UfPWJZJLEnluUHOAOl1REck=
+=Pb8H
+-----END PGP SIGNATURE-----

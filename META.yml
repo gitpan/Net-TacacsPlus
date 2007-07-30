@@ -1,0 +1,14 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         Net-TacacsPlus
+version:      1.02
+version_from: lib/Net/TacacsPlus.pm
+installdirs:  site
+requires:
+    Carp::Clan:                    0
+    Digest::MD5:                   0
+    IO::Socket:                    0
+    Math::XOR:                     0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.30_01

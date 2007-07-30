@@ -62,7 +62,7 @@ This module will import tacacs+ packet constants defined in tac-rfc.1.76.txt + T
 
 =head1 AUTHOR
 
-Jozef Kutej E<lt>jozef.kutej@hp.comE<gt>
+Jozef Kutej E<lt>jozef@kutej.netE<gt>
 
 =head1 VERSION
 
@@ -140,8 +140,7 @@ This sub is called automaticaly. I loads the constants to caller namespace. I to
 
 =cut
 
-sub import
-{
+sub import {
 	my $pkg = caller;
 
 	foreach my $name (keys %tac_plus_const)
