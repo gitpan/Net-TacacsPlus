@@ -14,22 +14,22 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 54b6780e814706d7c42e04f8e7272c526f2673dd Changes
+SHA1 7b84971093bbaa70fa6439b3275a90624781699c Changes
 SHA1 c6311a142a2329ff25cb54d090405c3f2338cf08 MANIFEST
-SHA1 ba507bab1d7dbfeff8f5b086a95c2b5cec5f5c69 META.yml
-SHA1 e012df5a2b7f6eeaaac8363ee7027a70cbe9d108 Makefile.PL
+SHA1 d16614c6412ef2387ac4126f9f80bea8d382a218 META.yml
+SHA1 1056be5c930112a2a84e178383a2ff49784b4622 Makefile.PL
 SHA1 f725d4dc057d2d711413d1bf1e75d352fce72819 README
-SHA1 4b4db1fc689fc7d817bb3eeda9a6615042b5f8da lib/Net/TacacsPlus.pm
-SHA1 a79138956d8bfa42abfe10a7003514a596aae220 lib/Net/TacacsPlus/Client.pm
-SHA1 88692ed3954e1e390a0359a9b5599e7b99b7ad8e lib/Net/TacacsPlus/Constants.pm
-SHA1 8958fdcf2a786963560fae71e320b965904bc285 lib/Net/TacacsPlus/Packet.pm
+SHA1 259b68231f4dd428c38acda169f800fc9b84a0ef lib/Net/TacacsPlus.pm
+SHA1 17ad4f90a3c88bce74b42ace46be4a25b2c6fae1 lib/Net/TacacsPlus/Client.pm
+SHA1 8f1c499d934861f57ae39c62e1eb311c0521c81f lib/Net/TacacsPlus/Constants.pm
+SHA1 4a403dca9bb98d6812a9cacd118a1f512b9b7741 lib/Net/TacacsPlus/Packet.pm
 SHA1 4aeb184c9bed26ab6c3be1ebdb8470c0cb353b1f t/0-signature.t
 SHA1 0d86e888bbf7c851129ea8ad3f2fafc70c3200dc t/Net-TacacsPlus-Client.t
 SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/distribution.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFGrekfuzJBASXpqvsRAoPxAJ98gvV/B4XdSFQIkwhoxKrsYrKnwgCgm1ql
-UfPWJZJLEnluUHOAOl1REck=
-=Pb8H
+iD8DBQFG2GmTuzJBASXpqvsRAqU0AKChTzjiHZdHO94WIyYZinsEL88fEgCgoA4G
+lEoDIQpe74L3E0HwLo4tsbg=
+=35ZN
 -----END PGP SIGNATURE-----
