@@ -14,22 +14,30 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 3bac912ed7def16f1e76a2748cdc0de18f3b9c5b Changes
-SHA1 c6311a142a2329ff25cb54d090405c3f2338cf08 MANIFEST
-SHA1 392225c9e76c8582f7e7c5001b6a28ac92820a0c META.yml
+SHA1 14d92360704adc144d02f23d252106af263a199a Changes
+SHA1 c3555ee5c3fbc37ae57c9c724009598e8c86617a MANIFEST
+SHA1 be1efbbda33e8c461deee193c7b215c3f8464434 META.yml
 SHA1 1056be5c930112a2a84e178383a2ff49784b4622 Makefile.PL
 SHA1 f725d4dc057d2d711413d1bf1e75d352fce72819 README
-SHA1 2bb58094c7ff1af13b81d64bbb93e815d3e95c2a lib/Net/TacacsPlus.pm
-SHA1 b83e3675b2e335dff2e84955f740526c197722d5 lib/Net/TacacsPlus/Client.pm
+SHA1 4d42a061b5e3ad1b84d889a1f51b3cd93ef5d9b4 lib/Net/TacacsPlus.pm
+SHA1 8c3fce487caf6af4f78d83bb4e68debfb92e28e2 lib/Net/TacacsPlus/Client.pm
 SHA1 8f1c499d934861f57ae39c62e1eb311c0521c81f lib/Net/TacacsPlus/Constants.pm
-SHA1 713cade4fdef5926600ee48a7922cddb5ae36d46 lib/Net/TacacsPlus/Packet.pm
+SHA1 254747321bafb98b8122b46c2c30a07687039741 lib/Net/TacacsPlus/Packet.pm
+SHA1 4d08135c660fb5700d6bec29c65608876a5e8d27 lib/Net/TacacsPlus/Packet/AccountReplyBody.pm
+SHA1 d99528c10360856b258b842d93f06652708f29e1 lib/Net/TacacsPlus/Packet/AccountRequestBody.pm
+SHA1 41c1c36176dd531c7f7459da1f606ab46740c6be lib/Net/TacacsPlus/Packet/AuthenContinueBody.pm
+SHA1 732adbdb56fd4aff5ca0e12754a6216850e33077 lib/Net/TacacsPlus/Packet/AuthenReplyBody.pm
+SHA1 561437d896577b51a9437aabb4767a84fa4fdd77 lib/Net/TacacsPlus/Packet/AuthenStartBody.pm
+SHA1 5e0a7723525d881b09cd9e3b88444017ffd4c668 lib/Net/TacacsPlus/Packet/AuthorRequestBody.pm
+SHA1 8ef415accf3210e8e3e05d43c3d34521b48c7af0 lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
+SHA1 8f36e9516f80b699c18e7257c80574773a5f2306 lib/Net/TacacsPlus/Packet/Header.pm
 SHA1 4aeb184c9bed26ab6c3be1ebdb8470c0cb353b1f t/0-signature.t
-SHA1 0d86e888bbf7c851129ea8ad3f2fafc70c3200dc t/Net-TacacsPlus-Client.t
+SHA1 fa8e0ccea02c62d1bb3656768de8cdee0c7d03ac t/Net-TacacsPlus-Client.t
 SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/distribution.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFG2ezHuzJBASXpqvsRAkZRAJ43xPCrvPPbl4i0AccHghL/o/s75QCghFwh
-DOAuVgLGLtGbgheqCZM/Wqg=
-=OcBS
+iD8DBQFG4aY/uzJBASXpqvsRAllGAJwL08/tW63Sphtf2YXdfXaQJQw1NQCfYXnf
+H8qDjdJuObYORmUHH+hp8Bs=
+=MUxB
 -----END PGP SIGNATURE-----

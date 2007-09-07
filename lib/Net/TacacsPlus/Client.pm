@@ -17,8 +17,9 @@ Net::TacacsPlus::Client - Tacacs+ client library
 		print "Authentication failed: ".$tac->errmsg()."\n";         
 	}                                                           
 
-	my $args = ['service=shell', 'cmd=ping', 'cmd-arg=10.0.0.1'];
-	if($tac->authorize($username, $args))
+	my @args = ( 'service=shell', 'cmd=ping', 'cmd-arg=10.0.0.1' );
+	my @args_response;
+	if($tac->authorize($username, \@args, \@args_response))
 	{
 		print "Authorization successful.\n";
 		print "Arguments received from server:\n";
@@ -28,8 +29,8 @@ Net::TacacsPlus::Client - Tacacs+ client library
 		print "Authorization failed: " . $tac->errmsg() . "\n";
 	}
 
-	$args = ['service=shell', 'cmd=ping', 'cmd-arg=10.0.0.1'];
-	if($tac->account($username, $args))
+	@args = ( 'service=shell', 'cmd=ping', 'cmd-arg=10.0.0.1' );
+	if($tac->account($username, \@args))
 	{
 		print "Accounting successful.\n";
 	} else {
@@ -63,7 +64,7 @@ tac-rfc.1.78.txt, Net::TacacsPlus::Packet
 
 package Net::TacacsPlus::Client;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 use strict;
 use warnings;
@@ -291,16 +292,20 @@ sub authenticate {
 	return 1;
 }
 
-=item authorize(username, args)
+=item authorize(username, args, args_response)
 
 username		- tacacs+ username
 args			- tacacs+ authorization arguments
+args_response   - updated by tacacs+ authorization arguments returned by server (optional)
 
 =cut
 
 sub authorize
 {
-	my ($self,$username,$args) = @_;
+	my ($self, $username, $args, $args_response) = @_;
+	
+	$args_response = [] if not defined $args_response;		
+	croak 'pass array ref as args_response parameter' if ref $args_response ne 'ARRAY'; 
 
 	my $status;	
 	eval {
@@ -345,7 +350,7 @@ sub authorize
 		} elsif ($status == TAC_PLUS_AUTHOR_STATUS_PASS_ADD ||
 			$status == TAC_PLUS_AUTHOR_STATUS_PASS_REPL)
 		{
-			$_[2] = $reply->args(); # make any arguments from server available to caller
+			@{$args_response} = @{$reply->args()}; # make any arguments from server available to caller
 		} elsif ($status == TAC_PLUS_AUTHOR_STATUS_FAIL)
 		{
 		} else
@@ -364,6 +369,12 @@ sub authorize
 	return undef if $status == TAC_PLUS_AUTHOR_STATUS_FAIL;
 	return $status;
 }
+
+=item check_args([])
+
+Check if the arguments comply with RFC.
+
+=cut
 
 sub check_args
 {
