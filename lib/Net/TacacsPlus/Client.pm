@@ -23,8 +23,7 @@ Net::TacacsPlus::Client - Tacacs+ client library
 	{
 		print "Authorization successful.\n";
 		print "Arguments received from server:\n";
-		# $args is overwritten with arguments sent in server response (if any)
-		print join("\n", @{$args});
+		print join("\n", @{$args_response});
 	} else {
 		print "Authorization failed: " . $tac->errmsg() . "\n";
 	}
@@ -41,30 +40,12 @@ Net::TacacsPlus::Client - Tacacs+ client library
 
 Currently only PAP and ASCII authentication can be used agains Tacacs+ server.
 
-=head1 AUTHOR
-
-Jozef Kutej - E<lt>jozef@kutej.netE<gt>
-
-Authorization and Accounting contributed by Rubio Vaughan <lt>rubio@passim.net<gt>
-
-=head1 VERSION
-
-1.03
-
-=head1 SEE ALSO
-
-tac-rfc.1.78.txt, Net::TacacsPlus::Packet
-
-=head1 TODO
-
-	tacacs+ CHAP, ARAP, MSCHAP authentication
-
 =cut
 
 
 package Net::TacacsPlus::Client;
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 use strict;
 use warnings;
@@ -74,13 +55,31 @@ use IO::Socket;
 use Exporter;
 use 5.006;
 use Fcntl qw(:DEFAULT);
-
-our @ISA = ('Exporter');
-our @EXPORT_OK = ('authenticate', 'authorize', 'account');
+use English qw( -no_match_vars );
 
 use Net::TacacsPlus::Constants 1.03;
 use Net::TacacsPlus::Packet 1.03;
 
+use base qw{ Class::Accessor::Fast };
+
+__PACKAGE__->mk_accessors(qw{
+	timeout
+	port
+	host
+	key
+	
+	tacacsserver
+	session_id
+	seq_no
+	errmsg
+	authen_method
+	authen_type
+});
+
+our @EXPORT_OK = ('authenticate', 'authorize', 'account');
+
+my $DEFAULT_TIMEOUT = 15;
+my $DEFAULT_PORT    = 49;
 
 =head1 METHODS
 
@@ -103,14 +102,12 @@ optional parameters: timeout, port
 sub new {
 	my $class = shift;
 	my %params = @_;
-	my $self = {};
+
+	#let the class accessor contruct the object
+	my $self = $class->SUPER::new(\%params);
 	
-	bless $self, $class;
-	
-	$self->{'timeout'} = $params{'timeout'} ? $params{'timeout'} : 15;
-	$self->{'port'} = $params{'port'} ? $params{'port'} : 'tacacs';
-	$self->{'host'} = $params{'host'};
-	$self->{'key'} = $params{'key'};
+	$self->timeout($DEFAULT_TIMEOUT) if not defined $self->timeout;
+	$self->port($DEFAULT_PORT)       if not defined $self->port;
 
 	return $self;
 }
@@ -124,10 +121,9 @@ Close socket connection.
 sub close {
 	my $self = shift;
 
-	if ($self->{'tacacsserver'})
-	{	
-		if (!close($self->{'tacacsserver'})) { warn "Error closing IO socket!\n" };
-		undef $self->{'tacacsserver'};
+	if ($self->tacacsserver) {
+		if (!close($self->tacacsserver)) { warn "Error closing IO socket!\n" };
+		$self->tacacsserver(undef);
 	}
 }
 
@@ -142,29 +138,20 @@ sub init_tacacs_session
 	my $self = shift;
 
 	my $remote;
-	$remote = IO::Socket::INET->new(Proto => "tcp", PeerAddr => $self->{'host'},
-					PeerPort => $self->{'port'}, Timeout => $self->{'timeout'});
-	croak("unable to connect to " . $self->{'host'} . ":" . $self->{'port'} . "\n")
+	$remote = IO::Socket::INET->new(Proto => "tcp", PeerAddr => $self->host,
+					PeerPort => $self->port, Timeout => $self->timeout);
+	croak("unable to connect to " . $self->host . ":" . $self->port . "\n")
 		if not defined $remote;
 	
-	$self->{'tacacsserver'} = $remote;
-	$self->{'session_id'} = int(rand(2 ** 32 - 1));	#2 ** 32 - 1
-	$self->{'seq_no'} = 1;
-	$self->{'errmsg'} = "";
+	$self->tacacsserver($remote);
+	$self->session_id(int(rand(2 ** 32 - 1)));	#2 ** 32 - 1
+	$self->seq_no(1);
+	$self->errmsg('');
 }
 
 =item errmsg()
 
 Returns latest error message
-
-=cut
-
-sub errmsg
-{
-	my $self = shift;
-
-	return $self->{'errmsg'};
-}
 
 =item authenticate(username, password, authen_type)
 
@@ -190,54 +177,54 @@ sub authenticate {
 			$pkt = Net::TacacsPlus::Packet->new(
 				#header
 				'type' => TAC_PLUS_AUTHEN,
-				'seq_no' => $self->{'seq_no'},
+				'seq_no' => $self->seq_no,
 				'flags' => 0,
-				'session_id' => $self->{'session_id'},
+				'session_id' => $self->session_id,
 				'authen_type' => $authen_type,
 				#start
 				'action' => TAC_PLUS_AUTHEN_LOGIN,
 				'user' => $username,
-				'key' => $self->{'key'},
-				'rem_addr' => inet_ntoa($self->{'tacacsserver'}->sockaddr)
+				'key' => $self->key,
+				'rem_addr' => inet_ntoa($self->tacacsserver->sockaddr)
 				);
 		} elsif ($authen_type == TAC_PLUS_AUTHEN_TYPE_PAP)
 		{
 			$pkt = Net::TacacsPlus::Packet->new(
 				#header
 				'type' => TAC_PLUS_AUTHEN,
-				'seq_no' => $self->{'seq_no'},
+				'seq_no' => $self->seq_no,
 				'flags' => 0,
-				'session_id' => $self->{'session_id'},
+				'session_id' => $self->session_id,
 				'authen_type' => $authen_type,
 				'minor_version' => 1,
 				#start
 				'action' => TAC_PLUS_AUTHEN_LOGIN,
-				'key' => $self->{'key'},
+				'key' => $self->key,
 				'user' => $username,
-				'password' => $password,
-				'rem_addr' => inet_ntoa($self->{'tacacsserver'}->sockaddr)
+				'data' => $password,
+				'rem_addr' => inet_ntoa($self->tacacsserver->sockaddr)
 				);
 		} else {
 			croak ('unsupported "authen_type" '.$authen_type.'.');
 		}
 
-		$pkt->send($self->{'tacacsserver'});
+		$pkt->send($self->tacacsserver);
 
 		#loop through REPLY/CONTINUE packets
 		do {
 			#receive reply packet
 			my $raw_reply;
-			$self->{'tacacsserver'}->recv($raw_reply,1024);
+			$self->tacacsserver->recv($raw_reply,1024);
 			croak ("reply read error ($raw_reply).") if not length($raw_reply);
 
 			my $reply = Net::TacacsPlus::Packet->new(
 						'type' => TAC_PLUS_AUTHEN,
 						'raw' => $raw_reply,
-						'key' => $self->{'key'},
+						'key' => $self->key,
 						);
 
 			Net::TacacsPlus::Packet->check_reply($pkt,$reply);
-			$self->{'seq_no'} = $reply->seq_no()+1;
+			$self->seq_no($reply->seq_no()+1);
 
 			$status=$reply->status();
 			if ($status == TAC_PLUS_AUTHEN_STATUS_GETUSER)
@@ -245,27 +232,27 @@ sub authenticate {
 				$pkt = Net::TacacsPlus::Packet->new(
 					#header
 					'type' => TAC_PLUS_AUTHEN,
-					'seq_no' => $self->{'seq_no'},
-					'session_id' => $self->{'session_id'},
+					'seq_no' => $self->seq_no,
+					'session_id' => $self->session_id,
 					#continue
 					'user_msg' => $username,
 					'data' => '',
-					'key' => $self->{'key'},
+					'key' => $self->key,
 					);
-				$pkt->send($self->{'tacacsserver'});
+				$pkt->send($self->tacacsserver);
 			} elsif ($status == TAC_PLUS_AUTHEN_STATUS_GETPASS)
 			{
 				$pkt = Net::TacacsPlus::Packet->new(
 					#header
 					'type' => TAC_PLUS_AUTHEN,
-					'seq_no' => $self->{'seq_no'},
-					'session_id' => $self->{'session_id'},
+					'seq_no' => $self->seq_no,
+					'session_id' => $self->session_id,
 					#continue
 					'user_msg' => $password,
 					'data' => '',
-					'key' => $self->{'key'},
+					'key' => $self->key,
 					);
-				$pkt->send($self->{'tacacsserver'});
+				$pkt->send($self->tacacsserver);
 			} elsif ($status == TAC_PLUS_AUTHEN_STATUS_ERROR)
 			{
 				croak('authen status - error');
@@ -273,13 +260,13 @@ sub authenticate {
 			{
 			} else
 			{
-				croak('unhandled status '.(0 + $status).'');
+				die('unhandled status '.(0 + $status).' (wrong secret key?)'."\n");
 			}
 		} while (($status != TAC_PLUS_AUTHEN_STATUS_FAIL) && ($status != TAC_PLUS_AUTHEN_STATUS_PASS))
 	};
-	if ($@)
+	if ($EVAL_ERROR)
 	{
-		$self->{'errmsg'} = $@;
+		$self->errmsg($EVAL_ERROR);
 		$self->close();
 		return undef;
 	}
@@ -287,8 +274,8 @@ sub authenticate {
 	$self->close();
 	return undef if $status == TAC_PLUS_AUTHEN_STATUS_FAIL;
 
-	$self->{'authen_method'} = TAC_PLUS_AUTHEN_METH_TACACSPLUS; # used later for authorization
-	$self->{'authen_type'} = $authen_type; # used later for authorization
+	$self->authen_method(TAC_PLUS_AUTHEN_METH_TACACSPLUS); # used later for authorization
+	$self->authen_type($authen_type); # used later for authorization
 	return 1;
 }
 
@@ -316,32 +303,32 @@ sub authorize
 		my $pkt = Net::TacacsPlus::Packet->new(
 			#header
 			'type' => TAC_PLUS_AUTHOR,
-			'seq_no' => $self->{'seq_no'},
+			'seq_no' => $self->seq_no,
 			'flags' => 0,
-			'session_id' => $self->{'session_id'},
+			'session_id' => $self->session_id,
 			#request
-			'authen_method' => $self->{'authen_method'},
-			'authen_type' => $self->{'authen_type'},
+			'authen_method' => $self->authen_method,
+			'authen_type' => $self->authen_type,
 			'user' => $username,
 			'args' => $args,
-			'key' => $self->{'key'},
+			'key' => $self->key,
 			);
 		
-		$pkt->send($self->{'tacacsserver'});
+		$pkt->send($self->tacacsserver);
 		
 		#receive reply packet
 		my $raw_reply;
-		$self->{'tacacsserver'}->recv($raw_reply,1024);
+		$self->tacacsserver->recv($raw_reply,1024);
 		croak("reply read error ($raw_reply).") if not length($raw_reply);
 
 		my $reply = Net::TacacsPlus::Packet->new(
 					'type' => TAC_PLUS_AUTHOR,
 					'raw' => $raw_reply,
-					'key' => $self->{'key'},
+					'key' => $self->key,
 					);
 
 		Net::TacacsPlus::Packet->check_reply($pkt,$reply);
-		$self->{'seq_no'} = $reply->seq_no()+1;
+		$self->seq_no($reply->seq_no()+1);
 
 		$status = $reply->status();
 		if ($status == TAC_PLUS_AUTHOR_STATUS_ERROR)
@@ -358,9 +345,9 @@ sub authorize
 			croak('unhandled status '.(0 + $status).'');
 		}
 	};
-	if ($@)
+	if ($EVAL_ERROR)
 	{
-		$self->{'errmsg'} = $@;
+		$self->errmsg($EVAL_ERROR);
 		$self->close();
 		return undef;
 	}
@@ -419,33 +406,33 @@ sub account
 		my $pkt = Net::TacacsPlus::Packet->new(
 			#header
 			'type' => TAC_PLUS_ACCT,
-			'seq_no' => $self->{'seq_no'},
+			'seq_no' => $self->seq_no,
 			'flags' => 0,
-			'session_id' => $self->{'session_id'},
+			'session_id' => $self->session_id,
 			#request
 			'acct_flags' => $flags,
-			'authen_method' => $self->{'authen_method'},
-			'authen_type' => $self->{'authen_type'},
+			'authen_method' => $self->authen_method,
+			'authen_type' => $self->authen_type,
 			'user' => $username,
 			'args' => $args,
-			'key' => $self->{'key'},
+			'key' => $self->key,
 			);
 		
-		$pkt->send($self->{'tacacsserver'});
+		$pkt->send($self->tacacsserver);
 		
 		#receive reply packet
 		my $raw_reply;
-		$self->{'tacacsserver'}->recv($raw_reply,1024);
+		$self->tacacsserver->recv($raw_reply,1024);
 		croak("reply read error ($raw_reply).") if not length($raw_reply);
 
 		my $reply = Net::TacacsPlus::Packet->new(
 					'type' => TAC_PLUS_ACCT,
 					'raw' => $raw_reply,
-					'key' => $self->{'key'},
+					'key' => $self->key,
 					);
 
 		Net::TacacsPlus::Packet->check_reply($pkt,$reply);
-		$self->{'seq_no'} = $reply->seq_no()+1;
+		$self->seq_no($reply->seq_no()+1);
 
 		$status = $reply->status();
 		if ($status == TAC_PLUS_ACCT_STATUS_ERROR)
@@ -458,9 +445,9 @@ sub account
 			croak('unhandled status '.(0 + $status).'');
 		}
 	};
-	if ($@)
+	if ($EVAL_ERROR)
 	{
-		$self->{'errmsg'} = $@;
+		$self->errmsg($EVAL_ERROR);
 		$self->close();
 		return undef;
 	}
@@ -476,9 +463,31 @@ sub DESTROY {
 	$self->close();
 }
 
-return 1;
+1;
 
 =back
+
+=head1 AUTHOR
+
+Jozef Kutej - E<lt>jozef@kutej.netE<gt>
+
+Authorization and Accounting contributed by Rubio Vaughan E<lt>rubio@passim.netE<gt>
+
+=head1 VERSION
+
+1.06
+
+=head1 SEE ALSO
+
+tac-rfc.1.78.txt, Net::TacacsPlus::Packet
+
+Net::TacacsPlus Trac page L<http://trac.cle.sk/Net-TacacsPlus/>
+
+Complete client script C<Net-TacacsPlus/examples/client.pl>.
+
+=head1 TODO
+
+	tacacs+ CHAP, ARAP, MSCHAP authentication
 
 =head1 COPYRIGHT AND LICENSE
 

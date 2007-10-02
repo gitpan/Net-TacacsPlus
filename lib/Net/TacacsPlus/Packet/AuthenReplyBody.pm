@@ -2,7 +2,7 @@ package Net::TacacsPlus::Packet::AuthenReplyBody;
 
 =head1 NAME
 
-Net::TacacsPlus::Packet::AuthenReplyBody;
+Net::TacacsPlus::Packet::AuthenReplyBody - Tacacs+ authentication replay body
 
 =head1 DESCRIPTION
 
@@ -24,7 +24,7 @@ REPLY packet) to the client. The REPLY packet body looks as follows:
 =cut
 
 
-our $VERSION = '1.03';
+our $VERSION = '1.06';
 
 use strict;
 use warnings;
@@ -32,6 +32,15 @@ use warnings;
 use 5.006;
 use Net::TacacsPlus::Constants 1.03;
 use Carp::Clan;
+
+use base qw{ Class::Accessor::Fast };
+
+__PACKAGE__->mk_accessors(qw{
+	status
+	flags
+	server_msg
+	data
+});
 
 =head1 METHODS
 
@@ -50,15 +59,19 @@ Parameters:
 sub new {
 	my $class = shift;
 	my %params = @_;
-	my $self = {};
-	
-	bless $self, $class;
 
-	if ($params{'raw_body'})
-	{
-		$self->decode($params{'raw_body'});	
+	#let the class accessor contruct the object
+	my $self = $class->SUPER::new(\%params);
+
+	if ($params{'raw_body'}) {
+		$self->decode($params{'raw_body'});
+		delete $self->{'raw_body'};
 		return $self;
 	}
+	
+	# set default values
+	$self->server_msg('') if not defined $self->server_msg; 
+	$self->data('')       if not defined $self->data; 
 
 	return $self;
 }
@@ -74,41 +87,42 @@ sub decode {
 	
 	my ($server_msg_len,$data_len,$payload);
 	
-	( $self->{'status'},
-	$self->{'flags'},
-	$server_msg_len,
-	$data_len,
-	$payload,
-	) = unpack("CCnnA*", $raw_data);
+	(
+		$self->{'status'},
+		$self->{'flags'},
+		$server_msg_len,
+		$data_len,
+		$payload,
+	) = unpack("CCnna*", $raw_data);
 
 	$payload = '' if not defined $payload; #payload can be empty
 
-	($self->{'server_msg'},
-	$self->{'data'}) = unpack("A".$server_msg_len."A".$data_len,$payload);
+	(
+		$self->{'server_msg'},
+		$self->{'data'}
+	) = unpack("a".$server_msg_len."a".$data_len,$payload);
 }
 
-=item server_msg()
 
-Return server message. 
+=item raw()
+
+Return binary data of packet body.
 
 =cut
 
-sub server_msg {
+sub raw {
 	my $self = shift;
 
-	return $self->{'server_msg'};
-}
+	my $body = pack("CCnna*a*",
+		$self->{'status'},
+		$self->{'flags'},
+		length($self->{'server_msg'}),
+		length($self->{'data'}),
+		$self->{'server_msg'},
+		$self->{'data'},
+	);
 
-=item status()
-
-Return status.
-
-=cut
-
-sub status {
-	my $self = shift;
-
-	return $self->{'status'};
+	return $body;
 }
 
 1;

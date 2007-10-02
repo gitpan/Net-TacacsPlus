@@ -14,30 +14,43 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 14d92360704adc144d02f23d252106af263a199a Changes
-SHA1 c3555ee5c3fbc37ae57c9c724009598e8c86617a MANIFEST
-SHA1 be1efbbda33e8c461deee193c7b215c3f8464434 META.yml
-SHA1 1056be5c930112a2a84e178383a2ff49784b4622 Makefile.PL
+SHA1 62bbc3b1a2fc408c937bcb708f0db06efd6a6dfc Changes
+SHA1 585fa0ef285a39cf3d98bdc94f791e37adc54a47 MANIFEST
+SHA1 df712cfa953057a28b75fb6dc434799fc6f7af91 META.yml
+SHA1 d3ee37b83fa39ebd4118a423f910f4119f08c357 Makefile.PL
 SHA1 f725d4dc057d2d711413d1bf1e75d352fce72819 README
-SHA1 4d42a061b5e3ad1b84d889a1f51b3cd93ef5d9b4 lib/Net/TacacsPlus.pm
-SHA1 8c3fce487caf6af4f78d83bb4e68debfb92e28e2 lib/Net/TacacsPlus/Client.pm
-SHA1 8f1c499d934861f57ae39c62e1eb311c0521c81f lib/Net/TacacsPlus/Constants.pm
-SHA1 254747321bafb98b8122b46c2c30a07687039741 lib/Net/TacacsPlus/Packet.pm
-SHA1 4d08135c660fb5700d6bec29c65608876a5e8d27 lib/Net/TacacsPlus/Packet/AccountReplyBody.pm
-SHA1 d99528c10360856b258b842d93f06652708f29e1 lib/Net/TacacsPlus/Packet/AccountRequestBody.pm
-SHA1 41c1c36176dd531c7f7459da1f606ab46740c6be lib/Net/TacacsPlus/Packet/AuthenContinueBody.pm
-SHA1 732adbdb56fd4aff5ca0e12754a6216850e33077 lib/Net/TacacsPlus/Packet/AuthenReplyBody.pm
-SHA1 561437d896577b51a9437aabb4767a84fa4fdd77 lib/Net/TacacsPlus/Packet/AuthenStartBody.pm
-SHA1 5e0a7723525d881b09cd9e3b88444017ffd4c668 lib/Net/TacacsPlus/Packet/AuthorRequestBody.pm
-SHA1 8ef415accf3210e8e3e05d43c3d34521b48c7af0 lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
-SHA1 8f36e9516f80b699c18e7257c80574773a5f2306 lib/Net/TacacsPlus/Packet/Header.pm
-SHA1 4aeb184c9bed26ab6c3be1ebdb8470c0cb353b1f t/0-signature.t
-SHA1 fa8e0ccea02c62d1bb3656768de8cdee0c7d03ac t/Net-TacacsPlus-Client.t
-SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/distribution.t
+SHA1 50c4d3b294728b5c8e544c7eb86d8c6d6dac76ee examples/client.pl
+SHA1 58c9b300523bcbe6aa720c2ec3fe5231db075158 examples/server.pl
+SHA1 29bf1138d706589370e983352679039a4e9bef3b lib/Net/TacacsPlus.pm
+SHA1 cac85935833d1cc73df66b825743cf91b60c2850 lib/Net/TacacsPlus/Client.pm
+SHA1 56406ec7a719b68f4e5058e3d0b77342501d8730 lib/Net/TacacsPlus/Constants.pm
+SHA1 db1efdcfdfaf55e776a62fdb0e57e2ff852dc404 lib/Net/TacacsPlus/Packet.pm
+SHA1 7b36a86ddf11447d7b70912ec59dae7ff6a3090d lib/Net/TacacsPlus/Packet/AccountReplyBody.pm
+SHA1 e4292121b99a7887b03b62fa9acdb2b05fcd655b lib/Net/TacacsPlus/Packet/AccountRequestBody.pm
+SHA1 5ee12f07487c449a13a6f53b5a2342f299a01827 lib/Net/TacacsPlus/Packet/AuthenContinueBody.pm
+SHA1 b5192c32388d18dfff0ef0c52919743dab80578d lib/Net/TacacsPlus/Packet/AuthenReplyBody.pm
+SHA1 9eed5ac992160cd82ea7ee8ea3179b356747118f lib/Net/TacacsPlus/Packet/AuthenStartBody.pm
+SHA1 ccd564de88040a7d8811d04b9694b03ef75acd5b lib/Net/TacacsPlus/Packet/AuthorRequestBody.pm
+SHA1 6ff15a9c4e7ce1a6af6f3c9da5d563268b930813 lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
+SHA1 0d1da6f98162df739eb1028cd73e8d08ecafed33 lib/Net/TacacsPlus/Packet/Header.pm
+SHA1 56c014f23651f32c5cffcbce24c5b10e752aebbb lib/POE/Component/Server/TacacsPlus.pm
+SHA1 42de4447b9ccab481aba9644bb66a847e3a52161 lib/POE/Filter/TacacsPlus.pm
+SHA1 4aeb184c9bed26ab6c3be1ebdb8470c0cb353b1f t/00-signature.t
+SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/01-distribution.t
+SHA1 f8c7fe09ca23c28313160d72fd6c6c91f2a215ee t/02-Net-TacacsPlus.t
+SHA1 fa8e0ccea02c62d1bb3656768de8cdee0c7d03ac t/03-Net-TacacsPlus-Client.t
+SHA1 830395c599e4055f9ff059ca16df270ee1017e9e t/04-Packet.t
+SHA1 8983b721ee695d09e8ec3bef3d48c760d05f50e0 t/05-AccountReplyBody.t
+SHA1 a0a7332599ba2b099e05e874bbdcfba5e4dccfd9 t/06-AccountRequestBody.t
+SHA1 97f329db3ac26cbdd2822780b40efefed1492957 t/07-AuthenContinueBody.t
+SHA1 6be8d8436833fd674d1b6fb36c426f4b11e99968 t/08-AuthenReplyBody.t
+SHA1 1b4fdbfd477a2f9b84387f776c1d504012444cb6 t/09-AuthenStartBody.t
+SHA1 db992ae01eb0bf921ab61486530d31fad0410f18 t/10-AuthorRequestBody.t
+SHA1 65ccf8824d5a6dce44d0db712800f8a8c1efeb14 t/11-AuthorResponseBody.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFG4aY/uzJBASXpqvsRAllGAJwL08/tW63Sphtf2YXdfXaQJQw1NQCfYXnf
-H8qDjdJuObYORmUHH+hp8Bs=
-=MUxB
+iD8DBQFHApe7uzJBASXpqvsRAnR0AKCc6Sg5amctFeibJbSAfuOTxE4tsACeMff3
+aePlSQcjOtY6dVsY4vNhcAA=
+=ItI6
 -----END PGP SIGNATURE-----

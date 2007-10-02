@@ -2,7 +2,7 @@ package Net::TacacsPlus::Packet::AuthorResponseBody;
 
 =head1 NAME
 
-Net::TacacsPlus::Packet::AuthorResponseBody;
+Net::TacacsPlus::Packet::AuthorResponseBody - Tacacs+ authorization response body 
 
 =head1 DESCRIPTION
 
@@ -33,7 +33,7 @@ The authorization RESPONSE packet body
 =cut
 
 
-our $VERSION = '1.03';
+our $VERSION = '1.06';
 
 use strict;
 use warnings;
@@ -41,6 +41,15 @@ use warnings;
 use 5.006;
 use Net::TacacsPlus::Constants 1.03;
 use Carp::Clan;
+
+use base qw{ Class::Accessor::Fast };
+
+__PACKAGE__->mk_accessors(qw{
+	status
+	server_msg
+	data
+	args
+});
 
 =head1 METHODS
 
@@ -56,17 +65,16 @@ Parameters:
 
 =cut
 
-sub new()
-{
+sub new() {
 	my $class = shift;
 	my %params = @_;
-	my $self = {};
-	
-	bless $self, $class;
 
-	if ($params{'raw_body'})
-	{
-		$self->decode($params{'raw_body'});	
+	#let the class accessor contruct the object
+	my $self = $class->SUPER::new(\%params);
+
+	if ($params{'raw_body'}) {
+		$self->decode($params{'raw_body'});
+		delete $self->{'raw_body'};
 		return $self;
 	}
 
@@ -79,76 +87,62 @@ Extract status, server_msg, data and arguments from raw packet.
 
 =cut
 
-sub decode($)
-{
+sub decode {
 	my ($self, $raw_data) = @_;
 	
 	my ($server_msg_len,$arg_cnt,@arg_lengths,$data_len,$offset,@args);
 	
-	( $self->{'status'},
-	$arg_cnt,
-	$server_msg_len,
-	$data_len,
+	(
+		$self->{'status'},
+		$arg_cnt,
+		$server_msg_len,
+		$data_len,
 	) = unpack("CCnn", $raw_data);
 	$offset = 6;
 	
-	@arg_lengths = unpack("x$offset " . ("C" x $arg_cnt), $raw_data);
+	@arg_lengths = unpack("x$offset" . ("C" x $arg_cnt), $raw_data);
 	$offset += $arg_cnt;
 
 	($self->{'server_msg'}, $self->{'data'}) =
-		unpack("x$offset A".$server_msg_len."A".$data_len, $raw_data);
+		unpack("x$offset"."a".$server_msg_len."a".$data_len, $raw_data);
 	$offset += $server_msg_len + $data_len;
 
 	foreach my $arglen (@arg_lengths)
 	{
-		push(@args, unpack("x$offset A$arglen", $raw_data));
+		push(@args, unpack("x$offset"."a$arglen", $raw_data));
 		$offset += $arglen;
 	}
 		
 	$self->{'args'} = \@args;
 }
 
-=item server_msg()
 
-Return server message.
+=item raw()
 
-=cut
-
-sub server_msg()
-{
-	my $self = shift;
-
-	return $self->{'server_msg'};
-}
-
-=item status()
-
-Return status.
+Return binary data of packet body.
 
 =cut
 
-sub status()
-{
+sub raw {
 	my $self = shift;
 
-	return $self->{'status'};
+	my $args_count = scalar(@{$self->{'args'}});
+	my $body = pack('CCnnC'.$args_count.'a*a*a*',
+		$self->{'status'},
+		$args_count,
+		length($self->{'server_msg'}),
+		length($self->{'data'}),
+		(map { length($_) } @{$self->{'args'}}),
+		$self->{'server_msg'},
+		$self->{'data'},
+		join('', @{$self->{'args'}}),
+	);
+
+	return $body;
 }
-
-=item args()
-
-Return arguments returned by server in authorization response packet.
-
-=cut
-
-sub args()
-{
-	my $self = shift;
-
-	return $self->{'args'};
-}
-
-1;
 
 =back
 
 =cut
+
+1;
