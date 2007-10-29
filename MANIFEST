@@ -14,6 +14,8 @@ t/08-AuthenReplyBody.t
 t/09-AuthenStartBody.t
 t/10-AuthorRequestBody.t
 t/11-AuthorResponseBody.t
+t/pod.t
+t/pod-coverage.t
 lib/Net/TacacsPlus.pm
 lib/Net/TacacsPlus/Client.pm
 lib/Net/TacacsPlus/Packet.pm
@@ -28,6 +30,8 @@ lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
 lib/Net/TacacsPlus/Packet/Header.pm
 lib/POE/Component/Server/TacacsPlus.pm
 lib/POE/Filter/TacacsPlus.pm
+examples/userdb.txt
+examples/log4perl.conf
 examples/client.pl
 examples/server.pl
 META.yml                                 Module meta-data (added by MakeMaker)

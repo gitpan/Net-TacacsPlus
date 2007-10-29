@@ -106,6 +106,9 @@ tac-rfc.1.78.txt, Net::TacacsPlus::Client
 
 package Net::TacacsPlus::Constants;
 
+use strict;
+use warnings;
+
 our $VERSION = '1.03';
 
 # constants from tac-rfc-1.78.txt + TAC_PLUS_HEADER_SIZE
@@ -212,7 +215,10 @@ sub import {
 		my $fullname="${pkg}::$name";
 		my $scalar=$tac_plus_const{$name};
 
-		*$fullname = sub () { $scalar };
+		do {
+			no strict 'refs';
+			*$fullname = sub () { $scalar };
+		}
 	}
 }
 
