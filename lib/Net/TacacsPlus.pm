@@ -20,7 +20,7 @@ Tacacs+ server (pap auth only) implemented by L<POE::Component::Server::TacacsPl
 
 =cut
 
-our $VERSION = '1.07';
+our $VERSION = '1.08';
 
 use strict;
 use warnings;
@@ -55,13 +55,9 @@ sub tacacs_client {
 
 1;
 
-=head1 LINKS
-
-Net::TacacsPlus Trac page L<http://trac.cle.sk/Net-TacacsPlus/>
-
 =head1 AUTHOR
 
-Jozef Kutej - E<lt>jozef@kutej.netE<gt>
+Jozef Kutej - E<lt>jkutej@cpan.orgE<gt>
 
 Authorization and Accounting contributed by Rubio Vaughan E<lt>rubio@passim.netE<gt>
 
