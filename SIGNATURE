@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.63.
+signed via the Module::Signature module, version 0.68.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,29 +14,24 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 9696b67f9e86e864e5205b81cdf3e72bd44042ae Changes
-SHA1 4615bd1e5f66ec073d889e095523191b9abe5dd1 MANIFEST
-SHA1 d043c61f2bc4c53b9c880d6913e46a08c2aa7dfd META.yml
-SHA1 d28fe02d7701dc1ade77213a3734b57c36404261 Makefile.PL
-SHA1 f725d4dc057d2d711413d1bf1e75d352fce72819 README
+SHA1 4aa63335892694c4650d13e74dbd03ad827f6e90 Changes
+SHA1 36b7c397836f3bcbcf526758c77d325187c695f8 MANIFEST
+SHA1 4c50d0fa9d2bffdde5fa403b380455e9dabcd979 META.yml
+SHA1 1499d5bc7df0298829a4f9dd707b3da9205dd909 Makefile.PL
+SHA1 c81101bd55268fcde93b4b17902b868ce3529b61 README
 SHA1 50c4d3b294728b5c8e544c7eb86d8c6d6dac76ee examples/client.pl
-SHA1 3ef362791d224ae41143e246cc066dbbbae08782 examples/log4perl.conf
-SHA1 58c9b300523bcbe6aa720c2ec3fe5231db075158 examples/server.pl
-SHA1 0be4b00280396e19e6aa631e3a405efda4c1e3a1 examples/userdb.txt
-SHA1 cf3c16353970ea2f129efa56638d094033013904 lib/Net/TacacsPlus.pm
-SHA1 1f90e3610f40622d7dd6113ebba97af00043d9bf lib/Net/TacacsPlus/Client.pm
-SHA1 50627fd76dd1fe9f326cf434527afa5b144b78bc lib/Net/TacacsPlus/Constants.pm
-SHA1 cfc158070b00125e8d76638f5f485b7aeccd5092 lib/Net/TacacsPlus/Packet.pm
-SHA1 88accc193fe3ebc26c34d53b5ff03fdbd065dbaf lib/Net/TacacsPlus/Packet/AccountReplyBody.pm
-SHA1 5bb3f6d828c9dc1a5e04dc34546e76d0d0b161f1 lib/Net/TacacsPlus/Packet/AccountRequestBody.pm
-SHA1 2e2c25e1d016d3153b7b248f3b6a5bd219f548c2 lib/Net/TacacsPlus/Packet/AuthenContinueBody.pm
-SHA1 7aae51b74712d0e51dd364a24f33838cc3e9b161 lib/Net/TacacsPlus/Packet/AuthenReplyBody.pm
-SHA1 6c816d29feb8a7b942d4f691c4338098e8332340 lib/Net/TacacsPlus/Packet/AuthenStartBody.pm
-SHA1 3d591c77ce775f890e65282535ec150ff8d8a855 lib/Net/TacacsPlus/Packet/AuthorRequestBody.pm
-SHA1 24a0db12b7e54126fbfd5a7e61feee18ce71cab0 lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
-SHA1 90c07cb4cbae875886686d19e0fe4113f8cecd96 lib/Net/TacacsPlus/Packet/Header.pm
-SHA1 2f9833c76f873429ae0a321234a8d4430df87901 lib/POE/Component/Server/TacacsPlus.pm
-SHA1 fe64085b09e98578492320d7d4d596951a4828af lib/POE/Filter/TacacsPlus.pm
+SHA1 bc6843aa9c5709f0b27bff756c5faaad75ec62c7 lib/Net/TacacsPlus.pm
+SHA1 0ea76b9ea5f8a304a7a86f26556805c95e262558 lib/Net/TacacsPlus/Client.pm
+SHA1 518372b535a08b03cd6018f946a61d249242b116 lib/Net/TacacsPlus/Constants.pm
+SHA1 e005eb97dbca0174a7ab40a24294656a12d1d5e5 lib/Net/TacacsPlus/Packet.pm
+SHA1 0d2800f6713e8ec5cb3223c83850ae81fd1c0421 lib/Net/TacacsPlus/Packet/AccountReplyBody.pm
+SHA1 16519fd65d29e7b3691e2efb2e2ef9a6b5286047 lib/Net/TacacsPlus/Packet/AccountRequestBody.pm
+SHA1 76a67edae34f6076cd42d58c0b98defbac212f47 lib/Net/TacacsPlus/Packet/AuthenContinueBody.pm
+SHA1 25d19b601f8199d837d5ffe202aea00a99fe588b lib/Net/TacacsPlus/Packet/AuthenReplyBody.pm
+SHA1 d1ae6bea5b0ebf6000002615df3d4477c129757f lib/Net/TacacsPlus/Packet/AuthenStartBody.pm
+SHA1 24cee3847471d79698569519278b88233eaf43c1 lib/Net/TacacsPlus/Packet/AuthorRequestBody.pm
+SHA1 0e1ddcf2bb313ff6380ebbf797dda6ad872e5efe lib/Net/TacacsPlus/Packet/AuthorResponseBody.pm
+SHA1 b9f0c8c472df503ee27d3e31009202854ad8426a lib/Net/TacacsPlus/Packet/Header.pm
 SHA1 41533fbd463e42d2ecf1e119eca910c16809d13e t/01-distribution.t
 SHA1 b2c309068359819c0e02e1c22e75c6795225c89f t/02-Net-TacacsPlus.t
 SHA1 7b23eae4b74fefcb4baa786af98a91023416e505 t/03-Net-TacacsPlus-Client.t
@@ -48,12 +43,13 @@ SHA1 942dc4ee3153f8b04fa24d7ea0a530dc41dc55d4 t/08-AuthenReplyBody.t
 SHA1 b58771a1126cd96234447f8ced120281a66da7e4 t/09-AuthenStartBody.t
 SHA1 8aba1308fba6312b2dd57fedf249158185a801cb t/10-AuthorRequestBody.t
 SHA1 aa91febb380486bdc70b60542e4a4e99fe3f4aa9 t/11-AuthorResponseBody.t
+SHA1 a4f2c71ab4c08b2f23699dabd7c87f990235ad2f t/12-Net-TacacsPlus-Constant.t
 SHA1 3a8fa081129a583da1dec4b5882e815f350a497b t/pod-coverage.t
 SHA1 1c2221234c6e97bd628d78e90052efb1a794e6ec t/pod.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
+Version: GnuPG v1.4.11 (GNU/Linux)
 
-iEYEARECAAYFAkw/RlwACgkQC0OgUPgL2Sdy8QCgtNEYMWV/VKTDSSE512f4wA3/
-ufUAnA6jD7VK04ZqBtwc4ifoABbbg2fW
-=7Ia7
+iEYEARECAAYFAk3spaIACgkQC0OgUPgL2Scn9wCgin0rrt2HyQLWKZK/qvCLjf7N
+oN4AnRkx0WlHriYwLA1MO4mggvFd0sgT
+=cFHa
 -----END PGP SIGNATURE-----

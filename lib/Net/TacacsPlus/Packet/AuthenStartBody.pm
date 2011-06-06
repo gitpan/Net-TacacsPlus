@@ -27,7 +27,7 @@ The authentication START packet body
 =cut
 
 
-our $VERSION = '1.09';
+our $VERSION = '1.10_01';
 
 use strict;
 use warnings;
