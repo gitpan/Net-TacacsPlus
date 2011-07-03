@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Net-TacacsPlus
-version:            1.10_01
+version:            1.10
 abstract:           Tacacs+ library
 author:
     - Jozef Kutej <jkutej@cpan.org>
