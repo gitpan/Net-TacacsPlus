@@ -54,6 +54,7 @@ use warnings;
 
 use Carp::Clan;
 use IO::Socket;
+use IO::Socket::INET6;
 use Exporter;
 use 5.006;
 use Fcntl qw(:DEFAULT);
@@ -142,7 +143,7 @@ sub init_tacacs_session
 	my $self = shift;
 
 	my $remote;
-	$remote = IO::Socket::INET->new(Proto => "tcp", PeerAddr => $self->host,
+	$remote = IO::Socket::INET6->new(Proto => "tcp", PeerAddr => $self->host,
 					PeerPort => $self->port, Timeout => $self->timeout);
 	croak("unable to connect to " . $self->host . ":" . $self->port . "\n")
 		if not defined $remote;
